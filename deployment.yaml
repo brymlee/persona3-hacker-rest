@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: persona3-hacker-rest-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: persona3-hacker-rest
+  template:
+    metadata:
+      labels:
+        app: persona3-hacker-rest
+    spec:
+      containers:
+      - name: persona3-hacker-rest
+        image: docker.io/brymlee1911/persona3-hacker-rest:latest
+        imagePullPolicy: Always
