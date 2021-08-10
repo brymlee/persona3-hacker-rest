@@ -14,5 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
     - name: Build persona3-hacker-rest
       run: docker build . --file Dockerfile --tag docker.io/brymlee1911/persona3-hacker-rest:$(date +%s)
