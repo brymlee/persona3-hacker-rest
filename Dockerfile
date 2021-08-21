@@ -1,15 +1,17 @@
-FROM archlinux:latest
-RUN pacman -Syu --noconfirm nodejs npm curl stack make gcc
-RUN stack update
-RUN stack setup
-RUN mkdir rest
-WORKDIR rest
-COPY persona3-hacker/persona3-hacker.cabal persona3-hacker.cabal 
-RUN stack init
-COPY persona3-hacker/src src
-RUN stack build
+FROM docker.io/archlinux:latest
+RUN pacman -Syu nodejs npm git --noconfirm
+RUN npm i -g purescript spago
+RUN mkdir persona3-hacker-rest
+WORKDIR persona3-hacker-rest
 COPY package.json package.json
 RUN npm i
-COPY index.js index.js
+COPY packages.dhall packages.dhall
+COPY spago.dhall spago.dhall
+RUN spago install
+COPY src src
+COPY persona3-hacker persona3-hacker
+RUN rm persona3-hacker/src/Main.purs
+RUN spago build
+RUN spago bundle-app
 EXPOSE 80
 CMD ["node", "index.js"]
