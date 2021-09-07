@@ -1,7 +1,11 @@
 module Main ( main
             , isNextCharacter 
-            , isFirstCharacterCurlyBracket
-            , isFirstCharacterSquareBracket) where 
+            , isFirstCharacterOpenCurlyBracket
+            , isFirstCharacterOpenSquareBracket
+            , isLastCharacterClosedCurlyBracket
+            , isLastCharacterClosedSquareBracket
+            , isStartingCurlyBrackets
+            ) where
 import Query (query, tail)
 import Effect (Effect)
 import Effect.Console (log)
@@ -12,7 +16,7 @@ import Data.Functor (map)
 import Data.String (joinWith)
 import Data.Show (show)
 import Node.HTTP (Server)
-import Data.Array (concat, head, length)
+import Data.Array (concat, head, length, reverse, all)
 import Prim (String(..), Array(..), Boolean(..))
 import Data.Function (($))
 import Data.Boolean (otherwise)
@@ -37,8 +41,17 @@ isNextCharacter xs | length xs < 2 = false
                          isNextCharacter' (Just x) = isNextCharacter $ concat [[x], tail ( tail xs)]
                    | otherwise = head xs == head (tail xs)
 
-isFirstCharacterCurlyBracket :: Array String -> Boolean
-isFirstCharacterCurlyBracket xs = isNextCharacter $ concat [["{"], xs]
+isFirstCharacterOpenCurlyBracket :: Array String -> Boolean
+isFirstCharacterOpenCurlyBracket xs = isNextCharacter $ concat [["{"], xs]
 
-isFirstCharacterSquareBracket :: Array String -> Boolean
-isFirstCharacterSquareBracket xs = isNextCharacter $ concat [["["], xs]
+isFirstCharacterOpenSquareBracket :: Array String -> Boolean
+isFirstCharacterOpenSquareBracket xs = isNextCharacter $ concat [["["], xs]
+
+isLastCharacterClosedCurlyBracket :: Array String -> Boolean
+isLastCharacterClosedCurlyBracket xs = isNextCharacter $ concat [["}"], reverse xs]
+
+isLastCharacterClosedSquareBracket :: Array String -> Boolean
+isLastCharacterClosedSquareBracket xs = isNextCharacter $ concat [["]"], reverse xs]
+
+isStartingCurlyBrackets :: Array String -> Boolean
+isStartingCurlyBrackets xs = all (\ it -> it) [isFirstCharacterOpenCurlyBracket xs, isLastCharacterClosedCurlyBracket xs]

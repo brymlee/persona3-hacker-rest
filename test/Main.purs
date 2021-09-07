@@ -4,8 +4,11 @@ import Control.Bind (discard)
 import Data.Unit (Unit)
 import Effect (Effect)
 import Main ( isNextCharacter
-            , isFirstCharacterCurlyBracket
-            , isFirstCharacterSquareBracket)
+            , isFirstCharacterOpenCurlyBracket
+            , isFirstCharacterOpenSquareBracket
+            , isLastCharacterClosedCurlyBracket
+            , isStartingCurlyBrackets
+            ) 
 import Test.Assert (assert)
 import Data.Function (($))
 import Prim (Boolean(..))
@@ -17,7 +20,11 @@ main = do
   assert $ isNextCharacter ["{", "["] == false
   assert $ isNextCharacter ["{", " ", "{"]
   assert $ isNextCharacter ["a", " ", " ", "b"] == false
-  assert $ isFirstCharacterCurlyBracket [" ", " ", "{"]
-  assert $ isFirstCharacterCurlyBracket [" ", " ", "["] == false
-  assert $ isFirstCharacterSquareBracket [" ", " ", "["]
-  assert $ isFirstCharacterSquareBracket [" ", " ", "{"] == false
+  assert $ isFirstCharacterOpenCurlyBracket [" ", " ", "{"]
+  assert $ isFirstCharacterOpenCurlyBracket [" ", " ", "["] == false
+  assert $ isFirstCharacterOpenSquareBracket [" ", " ", "["]
+  assert $ isFirstCharacterOpenSquareBracket [" ", " ", "{"] == false
+  assert $ isLastCharacterClosedCurlyBracket [" ", "[", "}"]
+  assert $ isLastCharacterClosedCurlyBracket [" ", "{", "]"] == false
+  assert $ isStartingCurlyBrackets [" ", "{", "a", "}", " "]
+  assert $ isStartingCurlyBrackets [" ", "{", "b", "]", " "] == false
