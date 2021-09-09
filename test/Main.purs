@@ -8,6 +8,9 @@ import Main ( isNextCharacter
             , isFirstCharacterOpenSquareBracket
             , isLastCharacterClosedCurlyBracket
             , isStartingCurlyBrackets
+            , isStartingSquareBrackets
+            , isEitherStartingCurlyOrSquareBrackets 
+            , isValidJson 
             ) 
 import Test.Assert (assert)
 import Data.Function (($))
@@ -28,3 +31,13 @@ main = do
   assert $ isLastCharacterClosedCurlyBracket [" ", "{", "]"] == false
   assert $ isStartingCurlyBrackets [" ", "{", "a", "}", " "]
   assert $ isStartingCurlyBrackets [" ", "{", "b", "]", " "] == false
+  assert $ isStartingSquareBrackets [" ", "[", "b", "]", " "]
+  assert $ isStartingSquareBrackets [" ", "{", "c", "]", " "] == false
+  assert $ isEitherStartingCurlyOrSquareBrackets [" ", "[", "a", "]", " "]
+  assert $ isEitherStartingCurlyOrSquareBrackets [" ", "{", "a", "}", " "]
+  assert $ isEitherStartingCurlyOrSquareBrackets [" ", "[", "a", "}", " "] == false
+  assert $ isValidJson " {  } "
+  assert $ isValidJson " [ ]"
+  assert $ isValidJson "b" == false
+  assert $ isValidJson "{ \"a\": \"b\", \"c\": \"d\" }"
+  assert $ isValidJson "{ \"a\": \"b\", \"c\": \"d\", }" == false
