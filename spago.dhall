@@ -11,7 +11,7 @@ When creating a new Spago project, you can use
 to generate this file without the comments in this block.
 -}
 { name = "persona3-hacker-rest"
-, dependencies = [ "prelude", "express", "arrays", "console", "effect", "maybe", "node-http", "strings", "tuples", "assert" ]
+, dependencies = [ "prelude", "express", "arrays", "effect", "maybe", "node-http", "strings", "console", "tuples" ]
 , packages = ./packages.dhall
-, sources = [ "src/**/*.purs", "test/**/*.purs", "persona3-hacker/src/**/*.purs" ]
+, sources = [ "src/**/*.purs", "persona3-hacker/src/**/*.purs" ]
 }

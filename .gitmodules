@@ -1,3 +1,6 @@
 [submodule "persona3-hacker"]
 	path = persona3-hacker
 	url = git@github.com:brymlee/persona3-hacker.git
+[submodule "isvalidjson-purs"]
+	path = isvalidjson-purs
+	url = git@github.com:brymlee/isvalidjson-purs.git
